@@ -1,15 +1,18 @@
-import {useStateIfMounted} from "use-state-if-mounted";
+import { useStateIfMounted } from "use-state-if-mounted";
 import Login from "./Login";
 import Signin from "./Signin";
 
-interface IProps {}
+interface IProps { }
 export default function Auth(props: IProps) {
     // creazione di due form in base a accesso/registrazione
-    const [flag, setFlag] = useStateIfMounted(false);
+    const [flag, setFlag] = useStateIfMounted(true);
 
-    return(<div>
-        <button className={'btn btn-primary'} onClick={(evt) => setFlag(!flag)}>switch</button>
+    return (<div>
+        <button className={"btn btn-primary"} onClick={() => setFlag(true)}>Login</button>
+        <button className={"btn btn-primary"} onClick={() => setFlag(false)}>Sign in</button>
+
         {(flag) ? <Login /> : <Signin />}
+
     </div>);
 
 
