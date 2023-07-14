@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 import Persistance from "../persistance/api";
+import {DUser, SetFieldAction} from "../joiner";
 
 
 interface IProps { }

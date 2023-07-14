@@ -1,19 +1,20 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import './App.scss';
 import './styles/view.scss';
 import './styles/style.scss';
 //import Dock from "./components/abstract/DockComponent";
 import Dock from "./components/abstract/DockLayout";
-import {statehistory} from "./joiner";
+import {DUser, IStore, statehistory} from "./joiner";
 import {useStateIfMounted} from "use-state-if-mounted";
 import {useEffectOnce} from "usehooks-ts";
 import SplashImage from './static/img/splash.png';
 import {Oval} from "react-loader-spinner";
 import TopBar from "./components/topbar/Topbar";
 import Auth from "./auth/Auth";
+import {connect} from "react-redux";
 
-interface Props {}
-function App(props: Props) {
+function App(props: AllProps) {
+    const user = props.user;
     const [splash, setSplash] = useStateIfMounted(false);
 
     useEffectOnce(() => {
@@ -35,9 +36,34 @@ function App(props: Props) {
         </div>);
     }
     */
+    if(user === null) {
+        return(<Auth />);
+    } else {
+        return(<>...</>)
+    }
 
-    return(<Auth />);
 
 }
+interface OwnProps {}
+interface StateProps {user: DUser|null}
+interface DispatchProps {}
+type AllProps = OwnProps & StateProps & DispatchProps;
 
-export default App;
+
+function mapStateToProps(state: IStore, ownProps: OwnProps): StateProps {
+    const user = state.user;
+    return {user};
+}
+
+function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+    const ret: DispatchProps = {};
+    return ret;
+}
+
+export const AppConnected = connect<StateProps, DispatchProps, OwnProps, IStore>(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
+
+
+export default AppConnected;

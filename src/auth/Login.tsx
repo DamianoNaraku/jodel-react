@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 import Persistance from "../persistance/api";
+import {CreateElementAction, DUser, SetFieldAction} from "../joiner";
 interface IProps { }
 export default function Login(props: IProps) {
 
@@ -9,6 +10,10 @@ export default function Login(props: IProps) {
 
     function submit(evt: React.MouseEvent<HTMLFormElement>) {
         Persistance.login(username, password);
+        const dUser = DUser.new();
+        CreateElementAction.new(dUser);
+        SetFieldAction.new(dUser.id, 'username', username, '', false);
+        SetFieldAction.new(dUser.id, 'email', 'todo', '', false);
         evt.preventDefault();
     }
 

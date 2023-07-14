@@ -1326,6 +1326,8 @@ export class DUser extends DPointerTargetable{
     static current: DocString<Pointer<DUser, 1, 1>> = "Pointer"; // todo
     static subclasses: (typeof RuntimeAccessibleClass | string)[] = [];
     static _extends: (typeof RuntimeAccessibleClass | string)[] = [];
+    username: string = '';
+    email: string = '';
     cursorPositionX: number = 0;
     cursorPositionY: number = 0;
     // public static structure: typeof DPointerTargetable;
@@ -1340,6 +1342,8 @@ export class DUser extends DPointerTargetable{
 export class LUser extends LPointerTargetable { // MixOnlyFuncs(DUser, LPointerTargetable)
     static subclasses: (typeof RuntimeAccessibleClass | string)[] = [];
     static _extends: (typeof RuntimeAccessibleClass | string)[] = [];
+    username!: string;
+    email!: string;
     // public static structure: typeof DPointerTargetable;
     // public static singleton: LPointerTargetable;
     public __raw!: DUser;
