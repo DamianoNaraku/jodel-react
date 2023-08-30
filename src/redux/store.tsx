@@ -48,9 +48,9 @@ import {
     SetRootFieldAction, ShortAttribETypes,
 } from "../joiner";
 import React from "react";
-import {DV} from "../common/DV";
+import { DV } from "../common/DV";
 import LeaderLine from "leader-line-new";
-import {DViewPoint, LViewPoint} from "../view/viewPoint/viewpoint";
+import { DViewPoint, LViewPoint } from "../view/viewPoint/viewpoint";
 
 console.warn('ts loading store');
 
@@ -58,7 +58,7 @@ console.warn('ts loading store');
 // NB: le voci che iniziano con '_' sono personali e non condivise
 
 
-export interface EdgeOptions{
+export interface EdgeOptions {
     id: number,
     options: LeaderLine.Options,
     source: string,
@@ -67,11 +67,11 @@ export interface EdgeOptions{
 
 // export const statehistory_obsoleteidea: {past: IStore[], current: IStore, future: IStore[]} = { past:[], current: null, future:[] } as any;
 export const statehistory: {
-        [userpointer:Pointer<DUser>]: {undoable:GObject<"delta">[], redoable: GObject<"delta">[]}
+    [userpointer: Pointer<DUser>]: { undoable: GObject<"delta">[], redoable: GObject<"delta">[] }
 } & {
     globalcanundostate: boolean // set to true at first user click }
-} = { globalcanundostate: false} as any;
-statehistory[DUser.current] = {undoable:[], redoable:[]}; // todo: make it able to combine last 2 changes with a keystroke. reapeat N times to combine N actions. let it "redo" multiple times, it's like recording a macro.
+} = { globalcanundostate: false } as any;
+statehistory[DUser.current] = { undoable: [], redoable: [] }; // todo: make it able to combine last 2 changes with a keystroke. reapeat N times to combine N actions. let it "redo" multiple times, it's like recording a macro.
 
 (window as any).statehistory = statehistory;
 export class IStore {
@@ -110,14 +110,14 @@ export class IStore {
     returnTypes: Pointer<DClass, 0, "N", LClass> = [];
     /// DClass section end
 
-    isEdgePending: {user: Pointer<DUser, 1, 1, LUser>, source: Pointer<DClass, 1, 1, LClass>} = {user: '', source: ''};
+    isEdgePending: { user: Pointer<DUser, 1, 1, LUser>, source: Pointer<DClass, 1, 1, LClass> } = { user: '', source: '' };
 
-    contextMenu: {display: boolean, x: number, y: number} = { display: false, x: 0, y: 0 };
+    contextMenu: { display: boolean, x: number, y: number } = { display: false, x: 0, y: 0 };
 
     //dragging: {random: number, id: string} = { random: 0, id: "" }; fix
     edges: EdgeOptions[] = [];  // delete
 
-    deleted : string[] = [];
+    deleted: string[] = [];
 
     objects: Pointer<DObject, 0, 'N', LObject> = [];
     values: Pointer<DValue, 0, 'N', LValue> = [];
@@ -138,7 +138,7 @@ export class IStore {
     m2models: Pointer<DModel, 0, 'N', LModel> = [];
     m1models: Pointer<DModel, 0, 'N', LModel> = [];
 
-    user: DUser|null = null;
+    user: Pointer<DUser, 0, 1, LUser> = null;
 
 
     constructor() {
@@ -155,28 +155,28 @@ export class IStore {
         const viewpoint = DViewPoint.new('Default');
         CreateElementAction.new(viewpoint);
         SetRootFieldAction.new('viewpoint', viewpoint.id, '', true);
-/*
-        const dMetaModel = DModel.new("Metamodel", undefined, true, true);
-        // CreateElementAction.new(dMetaModel);
-        CreateElementAction.new(DGraph.new(dMetaModel.id));
-        SetRootFieldAction.new('metamodel', dMetaModel.id, '', true);
-
-*/
+        /*
+                const dMetaModel = DModel.new("Metamodel", undefined, true, true);
+                // CreateElementAction.new(dMetaModel);
+                CreateElementAction.new(DGraph.new(dMetaModel.id));
+                SetRootFieldAction.new('metamodel', dMetaModel.id, '', true);
+        
+        */
 
         for (let primitiveType of Object.values(ShortAttribETypes)) {
             let dPrimitiveType;
             if (primitiveType === ShortAttribETypes.void) continue; // or make void too without primitiveType = true, but with returnType = true?
-            else dPrimitiveType = DClass.new(primitiveType, false, false, true, false, '',undefined, true);
+            else dPrimitiveType = DClass.new(primitiveType, false, false, true, false, '', undefined, true);
             // CreateElementAction.new(dPrimitiveType);
             SetRootFieldAction.new('primitiveTypes', dPrimitiveType.id, '+=', true);
         }
-/*
-        const returnTypes = ["void", "undefined", "null"]; // rimosso undefined dovrebbe essere come void (in ShortAttribEtypes, null è ritornato solo dalle funzioni che normalmente ritornano qualche DObject, quindi tipizzato con quel DObject
-        for (let returnType of returnTypes) {
-            const dReturnType = DClass.new(returnType);
-            CreateElementAction.new(dReturnType);
-            SetRootFieldAction.new("returnTypes", dReturnType.id, '+=', true);
-        }*/
+        /*
+                const returnTypes = ["void", "undefined", "null"]; // rimosso undefined dovrebbe essere come void (in ShortAttribEtypes, null è ritornato solo dalle funzioni che normalmente ritornano qualche DObject, quindi tipizzato con quel DObject
+                for (let returnType of returnTypes) {
+                    const dReturnType = DClass.new(returnType);
+                    CreateElementAction.new(dReturnType);
+                    SetRootFieldAction.new("returnTypes", dReturnType.id, '+=', true);
+                }*/
 
         /*
         const dMetaModel = DModel.new("Metamodel");
@@ -288,7 +288,7 @@ function makeDefaultGraphViews(): DViewElement[] {
     return alldefaultViews;
 }
 
-function makeEditView(): DViewElement{
+function makeEditView(): DViewElement {
     // let jsx = <p><h1>edit view of {this.data.name}</h1><Input className={'raw'} obj={this.view.id} field={((getPath as DViewElement).jsxString as any).$}/></p>;
     let jsxstring = '<p style={{display: "flex", flexFlow: "wrap"}}><h1>edit view of {this.data.name}</h1><Textarea obj={this.views[1].id} field={((getPath).jsxString).$}/></p>;';
     let view: DViewElement = DViewElement.new('EditView', jsxstring);
@@ -323,7 +323,7 @@ export class LUserState extends MixOnlyFuncs(DUserState, LPointerTargetable) {
 DPointerTargetable.subclasses.push(DUserState);*/
 
 @RuntimeAccessible
-export class ViewPointState extends DPointerTargetable{
+export class ViewPointState extends DPointerTargetable {
     name: string = '';
 }
 

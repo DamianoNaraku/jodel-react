@@ -1,25 +1,26 @@
-import React, {Dispatch} from 'react';
+import React, { Dispatch } from 'react';
 import './App.scss';
 import './styles/view.scss';
 import './styles/style.scss';
 //import Dock from "./components/abstract/DockComponent";
 import Dock from "./components/abstract/DockLayout";
-import {DUser, IStore, statehistory} from "./joiner";
-import {useStateIfMounted} from "use-state-if-mounted";
-import {useEffectOnce} from "usehooks-ts";
+import { DUser, IStore, LUser, Pointer, statehistory } from "./joiner";
+import { useStateIfMounted } from "use-state-if-mounted";
+import { useEffectOnce } from "usehooks-ts";
 import SplashImage from './static/img/splash.png';
-import {Oval} from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
 import TopBar from "./components/topbar/Topbar";
 import Auth from "./auth/Auth";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+import NavBar from './components/adminPanel/NavBar';
 
 function App(props: AllProps) {
     const user = props.user;
     const [splash, setSplash] = useStateIfMounted(false);
 
     useEffectOnce(() => {
-        const promise = new Promise((resolve) => {setTimeout(resolve, 4 * 1000)});
-        promise.then(() => {setSplash(false)});
+        const promise = new Promise((resolve) => { setTimeout(resolve, 4 * 1000) });
+        promise.then(() => { setSplash(false) });
     });
 
     /* DO NOT UNCOMMENT!
@@ -36,23 +37,23 @@ function App(props: AllProps) {
         </div>);
     }
     */
-    if(user === null) {
-        return(<Auth />);
+    if (!user) {
+        return (<Auth />);
     } else {
-        return(<>...</>)
+        return (<NavBar user={user} />)
     }
 
 
 }
-interface OwnProps {}
-interface StateProps {user: DUser|null}
-interface DispatchProps {}
+interface OwnProps { }
+interface StateProps { user: Pointer<DUser, 0, 1, LUser> }
+interface DispatchProps { }
 type AllProps = OwnProps & StateProps & DispatchProps;
 
 
 function mapStateToProps(state: IStore, ownProps: OwnProps): StateProps {
     const user = state.user;
-    return {user};
+    return { user };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
