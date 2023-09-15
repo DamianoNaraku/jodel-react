@@ -1,24 +1,44 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {GObject} from "../joiner";
 
 export default class Persistance {
     static url(path: string, queryPars?: string): string {
-        return 'http://localhost:8000/api/v1/' + path + (queryPars ? '&' + queryPars : '/');
+        return '/api/v1/' + path + (queryPars ? '/?' + queryPars : '/');
     }
 
-    static async get(path: string, queryPars?: string): Promise<AxiosResponse|null> {
+    static async get(path: string, token?: string, queryPars?: string): Promise<AxiosResponse|null> {
+        console.clear();
+        const config: AxiosRequestConfig = {};
+        if(token) config.headers = {'Authorization': `Token ${token}`}
         try {
-            const response = await axios.get(Persistance.url(path, queryPars));
-            console.clear(); console.log(response);
+            const response = await axios.get(Persistance.url(path, queryPars), config);
+            console.log(response);
             return response
 
         } catch (e) {console.log('API Error', e);}
         return null;
     }
 
-    static async post(path: string, obj: any, queryPars?: string): Promise<AxiosResponse|null> {
+    static async post(path: string, obj: GObject, token?: string, queryPars?: string): Promise<AxiosResponse|null> {
+        console.clear();
+        const config: AxiosRequestConfig = {};
+        if(token) config.headers = {'Authorization': `Token ${token}`}
         try {
-            const response = await axios.post(Persistance.url(path, queryPars), obj);
-            console.clear(); console.log(response);
+            const response = await axios.post(Persistance.url(path, queryPars), obj, config);
+            console.log(response);
+            return response
+
+        } catch (e) {console.log('API Error', e);}
+        return null;
+    }
+
+    static async put(path: string, obj: GObject, token?: string, queryPars?: string): Promise<AxiosResponse|null> {
+        console.clear();
+        const config: AxiosRequestConfig = {};
+        if(token) config.headers = {'Authorization': `Token ${token}`}
+        try {
+            const response = await axios.put(Persistance.url(path, queryPars), obj, config);
+            console.log(response);
             return response
 
         } catch (e) {console.log('API Error', e);}
