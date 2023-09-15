@@ -27,11 +27,14 @@ export default class Persistance {
         })
             .then(function (response) {
                 console.log(response);
+                return response.data.token;
+
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
+
 
     static post(): void {
         axios.post(Persistance.url('user'), {

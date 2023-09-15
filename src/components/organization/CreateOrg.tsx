@@ -8,8 +8,8 @@ export default function CreateOrg(props: any) {
     const [name, setName] = useStateIfMounted('');
     const [emailOrg, setEmailOrg] = useStateIfMounted('');
     const [bio, setBio] = useStateIfMounted('');
-    const [isPublic, setIsPublic] = useStateIfMounted(false);
-    const [isOpen, setIsOpen] = useStateIfMounted(false);
+    const [isOpen, setIsOpen] = useStateIfMounted('1');
+    const [isPublic, setIsPublic] = useStateIfMounted('1');
     const [errorMessage, setErrorMessage] = useStateIfMounted('');
     const [successMessage, setSuccessMessage] = useStateIfMounted('');
 
@@ -47,6 +47,14 @@ export default function CreateOrg(props: any) {
         evt.preventDefault();
     }
 
+    function onRadioChange(e: { target: { value: any; }; }) {
+        setIsOpen(e.target.value);
+    }
+
+    function onCheckboxChange(e: { target: { value: any; }; }) {
+        isPublic == '1' ? setIsPublic('0') : setIsPublic('1');
+    }
+
     return (
         <div className="container mt-5">
             <form onSubmit={submit}>
@@ -61,15 +69,15 @@ export default function CreateOrg(props: any) {
                 </div>
                 <h6>Membership:</h6>
                 <div className="form-check mb-2">
-                    <input type='radio' className='form-check-input' name="membership" value="si" id="open" onChange={(evt) => setIsOpen(true)} />
+                    <input type='radio' className='form-check-input' name="membership" value="1" id="open" onChange={onRadioChange} checked={isOpen == "1"} />
                     <label className="form-check-label" htmlFor="open">Open</label>
                 </div>
                 <div className="form-check">
-                    <input type='radio' className='form-check-input' name="membership" value="no" id="close" checked onChange={(evt) => setIsOpen(false)} />
+                    <input type='radio' className='form-check-input' name="membership" value="0" id="close" onChange={onRadioChange} checked={isOpen == "0"} />
                     <label className="form-check-label" htmlFor="close">Closed</label>
                 </div>
                 <div className="form-check my-3">
-                    <input type='checkbox' className='form-check-input' value="si" id="isPublic" onChange={(evt) => setIsPublic(true)} />
+                    <input type='checkbox' className='form-check-input' value="1" id="isPublic" onChange={onCheckboxChange} checked={isPublic == '1'} />
                     <label className="form-check-label" htmlFor="isPublic">public</label>
                 </div>
                 <button type='submit' className='form-control btn btn-primary'>Create organization</button>

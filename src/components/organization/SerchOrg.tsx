@@ -2,6 +2,7 @@ import React from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 import axios from 'axios';
 import Pagination from './Pagination';
+import DetailOrg from './DetailOrg';
 
 
 export default function SearchOrg(props: any) {
@@ -9,6 +10,8 @@ export default function SearchOrg(props: any) {
     const [orgs, setOrgs] = useStateIfMounted<Org[]>([]);
     const [resultCount, setResultCount] = useStateIfMounted(0);
     const [currentPage, setCurrentPage] = useStateIfMounted(0);
+    const [currentOrg, setCurrentOrg] = useStateIfMounted(undefined);
+
     const orgsPerPage = 2;
 
     function submit(evt: React.MouseEvent<HTMLFormElement>) {
@@ -58,10 +61,17 @@ export default function SearchOrg(props: any) {
         setSearch("");
         setOrgs([]);
         setResultCount(0);
+        setCurrentOrg(undefined);
 
     }
 
+    function setDetailOrg(org: any) {
+        setCurrentOrg(org);
+    }
 
+    function handleCloseButton() {
+        setCurrentOrg(undefined);
+    }
 
     return (
         <div className="container mt-5">
@@ -74,20 +84,13 @@ export default function SearchOrg(props: any) {
             </form>
             <ul className="list-group mt-3">
                 {orgs.map(org =>
-                    <div className="card mt-2" key={org.pk}>
-                        <div className="card-header">
-                            <b>{org.name}</b>
-                        </div>
-                        <div className="card-body">
-                            <p className="card-text">{org.isPublic ? 'Public' : 'Private'}</p>
-                            <p className="card-text">Membership: {org.openMembership ? 'Open' : 'Closed'}</p>
-                            <button className="btn btn-primary">{org.openMembership ? 'Join' : 'Request to Join'}</button>
-                        </div>
-                    </div>
-
+                    <li key={org.pk} className="list-group-item" onClick={() => setDetailOrg(org)}>
+                        <b>{org.name}</b>
+                    </li>
                 )}
             </ul>
             <Pagination orgsPerPage={orgsPerPage} totalOrgs={resultCount} curPage={currentPage} changePage={changePage} />
+            {currentOrg != undefined && <DetailOrg org={currentOrg} handleCloseButton={handleCloseButton} />}
         </div>
     )
 
