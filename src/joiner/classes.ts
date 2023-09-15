@@ -446,7 +446,7 @@ export class Constructors<T extends DPointerTargetable>{
     DState(): this {
         let thiss: DState = this.thiss as any;
         // todo: this must become a pointer to idlookup and fire a CreateNewElementAction
-        thiss.currentUser = DUser.new(undefined, false);
+        thiss.currentUser = DUser.new('dummy', 'dummy', undefined);
         thiss.users = [thiss.currentUser.id];
         thiss.models = [];
         return this; }
@@ -564,13 +564,16 @@ export class Constructors<T extends DPointerTargetable>{
         }
         return this; }
 
-    DUser(id?: DUser["id"]): this {
-        const thiss: DPointerTargetable = this.thiss as any;
+    DUser(username: DUser['username'], token: DUser['token'], id?: DUser["id"]): this {
+        const thiss: DUser = this.thiss as any;
         thiss.id = id ||  new Date().getTime() + '_USER_' + (DPointerTargetable.maxID++);
+        thiss.username = username;
+        thiss.token = token;
         if (this.persist) {
             // no pointedBy
         }
-        return this; }
+        return this;
+    }
 
     DNamedElement(name?: DNamedElement["name"]): this {
         const thiss: DNamedElement = this.thiss as any;
@@ -1532,18 +1535,18 @@ let bb2 = fffff(a);
 export class DUser extends DPointerTargetable{
     public static cname: string = "DUser";
     static current: DocString<Pointer<DUser, 1, 1>> = 'Pointer' + Date.now(); // todo
-    // Session's token that change for every session
     static token: DocString<Pointer<DUser, 1, 1>> = 'Pointer' + Date.now();
     static subclasses: (typeof RuntimeAccessibleClass | string)[] = [];
     static _extends: (typeof RuntimeAccessibleClass | string)[] = [];
     cursorPositionX: number = 0;
     cursorPositionY: number = 0;
-    // public static structure: typeof DPointerTargetable;
-    // public static singleton: LPointerTargetable;
     id!: Pointer<DUser, 1, 1, LUser>;
+    username!: string;
+    token!: string;
     __isUser: true = true; // necessary to trick duck typing to think this is NOT the superclass of anything that extends PointerTargetable.
-    public static new(id?: DUser["id"], triggerActions: boolean = true): DUser {
-        return new Constructors(new DUser('dwc'), undefined, false).DPointerTargetable().DUser(id).end(); }
+    public static new(username: string, token: string, id?: DUser["id"], triggerActions: boolean = true): DUser {
+        return new Constructors(new DUser('dwc'), undefined, false).DPointerTargetable().DUser(username, token, id).end();
+    }
 }
 
 @RuntimeAccessible
@@ -1551,10 +1554,10 @@ export class LUser extends LPointerTargetable { // MixOnlyFuncs(DUser, LPointerT
     public static cname: string = "LUser";
     static subclasses: (typeof RuntimeAccessibleClass | string)[] = [];
     static _extends: (typeof RuntimeAccessibleClass | string)[] = [];
-    // public static structure: typeof DPointerTargetable;
-    // public static singleton: LPointerTargetable;
     public __raw!: DUser;
     id!: Pointer<DUser, 1, 1, LUser>;
+    username!: string;
+    token!: string;
     __isUser!: true;
     cursorPosition!: IPoint; //todo
 }

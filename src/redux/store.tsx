@@ -178,6 +178,9 @@ export class DState extends DPointerTargetable{
 
     memorec: GObject[]|null = null;
 
+    user: Pointer<DUser, 0, 1, LUser> = null;
+
+
 
     static fakeinit(store?: DState): void {
         // const graphDefaultViews: DViewElement[] = makeDefaultGraphViews();
