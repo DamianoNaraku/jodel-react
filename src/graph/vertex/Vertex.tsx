@@ -16,8 +16,22 @@ import {
     LPointerTargetable,
     LUser,
     LVoidVertex,
-    RuntimeAccessibleClass, LViewPoint,
-    U, GraphSize, GraphPoint, GObject, Size, SetRootFieldAction, SetFieldAction, DVertex, DVoidEdge, DEdgePoint, DUser, Dictionary, Pointer,
+    RuntimeAccessibleClass,
+    LViewPoint,
+    U,
+    GraphSize,
+    GraphPoint,
+    GObject,
+    Size,
+    SetRootFieldAction,
+    SetFieldAction,
+    DVertex,
+    DVoidEdge,
+    DEdgePoint,
+    DUser,
+    Dictionary,
+    Pointer,
+    Selectors,
 } from "../../joiner";
 import $ from "jquery";
 import "jqueryui";
@@ -211,13 +225,13 @@ export class VertexComponent<AllProps extends AllPropss = AllPropss, ThisState e
             if(me?.id === this.props.dataid) selected = true;
 
         if (selected) {
-            cssOverride.push('selected-by-me');
-            /*
-            if (this.props.dataid === this.props.selected[DUser.current]?.id)
+            const user = Selectors.getCurrentUser();
+            if(!user) return;
+            if (this.props.dataid === this.props.selected[user.token]?.id)
                 cssOverride.push('selected-by-me');
             else
                 cssOverride.push('selected-by-others');
-            */
+
         }
 
         // if(!windoww.cpts) windoww.cpts = {};

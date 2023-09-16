@@ -1,29 +1,24 @@
-import React, {Dispatch, ReactElement, useState} from "react";
+import React, {Dispatch, ReactElement} from "react";
 import {connect} from "react-redux";
 import './style.scss';
 import {
     DState,
-    CreateElementAction,
-    DEdgePoint,
     DViewElement,
-    DVoidEdge,
     EdgeBendingMode,
     GObject,
-    GraphSize,
-    Input,
-    Selectors,
-    SetFieldAction,
+    GraphSize, LoadAction,
+    LUser,
     SetRootFieldAction,
     store
 } from "../../joiner";
 import {SaveManager} from "./SaveManager";
-import {DamEdge} from "../../graph/damedges/damedge";
 import toast from "react-hot-toast";
 import Undoredocomponent from "./undoredocomponent";
 import RoomManager from "../room/RoomManager";
+import Persistance from "../../persistance/api";
 
 function Topbar(props: AllProps) {
-
+    const user = props.user;
     const debug = props.debug;
 
     const notify = (text: string) => toast((t: GObject) => (
@@ -31,7 +26,27 @@ function Topbar(props: AllProps) {
             <label className={'ms-1'}>{text}</label>
         </div>
     ));
-    const [edgetest, setEdgeTest] = useState(<div id={"edgetest-empty"}></div>);
+
+    const saveToDB = async() => {
+        console.clear();
+        const response = await Persistance.patch(`model/${user.username}`, {
+            author: user.username,
+            is_public: 0,
+            content_xml: JSON.stringify(store.getState()),
+            namespace: user.username,
+            name: 'Default State'
+        }, user.token);
+        console.log(response);
+    }
+
+    const loadFromDB = async() => {
+        console.clear();
+        const response = await Persistance.get('model', user.token, `author=${user.username}`);
+        if(!response) {alert('Error'); return;}
+        const state = response.data.results[0].content_xml;
+        if(state === 'empty') {alert('Empty Model'); return;}
+        LoadAction.new(JSON.parse(state));
+    }
 
     const save = (evt: React.MouseEvent<HTMLLabelElement>) => {
         SaveManager.save();
@@ -61,12 +76,12 @@ function Topbar(props: AllProps) {
     return(<div className={'topbar d-flex'}>
         <label className={'item border round ms-1'} onClick={save}>Save</label>
         <label className={'item border round ms-1'} onClick={load}>Load</label>
-        {debug && <Undoredocomponent /> }
+        {debug && false && <Undoredocomponent /> }
 
         <label className={'item border round ms-1'} onClick={exportJson}>Export JSON</label>
         <label className={'item border round ms-1'} onClick={importJson}>Import JSON</label>
 
-        {debug && <>
+        {debug && false && <>
                 <label className={'item border round ms-1'} onClick={exportXml}>Export XML</label>
                 <label className={'item border round ms-1'} onClick={importXml}>Import XML</label>
 
@@ -84,12 +99,16 @@ function Topbar(props: AllProps) {
             />
         </label>
 
+        <label onClick={() => props.setOnModel(false)} className={'item border round ms-1'}>Go to Organizations</label>
+        <label onClick={saveToDB} className={'item border round ms-1'}>Save DB</label>
+        <label onClick={loadFromDB} className={'item border round ms-1'}>Load DB</label>
+
         <div className={'ms-auto d-flex'}>
             <RoomManager room={props.room} />
         </div>
     </div>);
 }
-interface OwnProps {room?: string}
+interface OwnProps {room?: string, user: LUser, setOnModel: (flag: boolean) => void}
 interface StateProps {debug: boolean}
 interface DispatchProps {}
 type AllProps = OwnProps & StateProps & DispatchProps;

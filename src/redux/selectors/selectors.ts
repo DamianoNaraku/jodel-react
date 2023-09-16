@@ -1,14 +1,14 @@
 import type {
     DAttribute,
     DClass,
-    DGraph,
     DClassifier,
     DEnumerator,
+    DGraph,
     DGraphElement,
     DRefEdge,
+    DState,
     DVoidVertex,
     GObject,
-    DState,
     LClass,
     LEnumerator,
     LGraphElement,
@@ -22,18 +22,27 @@ import type {
 import {
     AbstractConstructor,
     Constructor,
+    Dictionary,
+    DModel,
+    DModelElement,
+    DObject,
+    DPointerTargetable,
+    DUser,
+    DValue,
+    DViewElement,
+    LModel,
     LModelElement,
-    DModel, LModel,
-    DModelElement, DNamedElement, DObject,
-    DPointerTargetable, DValue,
-    DViewElement, LNamedElement, LObject,
+    LObject,
     Log,
-    LPointerTargetable, LValue,
-    MyProxyHandler, OCL,
+    LPointerTargetable,
+    LValue,
+    LViewPoint,
+    MyProxyHandler,
+    OCL, LUser,
     RuntimeAccessible,
     RuntimeAccessibleClass,
     store,
-    U, windoww, Pointers, DViewPoint, LViewPoint, Dictionary, DUser
+    U
 } from "../../joiner";
 import {EdgeOptions} from "../store";
 
@@ -47,6 +56,12 @@ enum ViewEClassMatch { // this acts as a multiplier for explicit priority
 @RuntimeAccessible
 export class Selectors{
     public static cname: string = "Selectors";
+
+    static getCurrentUser(): LUser|null {
+        const pointer = store.getState().user;
+        const user: LUser|null = pointer ? LUser.fromPointer(pointer) : null;
+        return user;
+    }
 
     static getSelected(): Dictionary<Pointer<DUser>, Pointer<DModelElement, 0, 1, LModelElement>> {
         const state = store.getState();

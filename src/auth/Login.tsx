@@ -10,7 +10,7 @@ export default function Login(props: IProps) {
 
     const submit = async(evt: React.MouseEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        const response = await Persistance.post('token', {
+        const response = await Persistance.post('token/', {
             username: username,
             password: password
         });

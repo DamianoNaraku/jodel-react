@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import Cleaning from "./popup/Cleaning";
 import Auth from "./auth/Auth";
 import HandleOrg from "./organizzation/HandleOrg";
+import Navbar from "./components/navbar/Navbar";
 
 function App(props: AllProps) {
     const user = props.user;
@@ -41,7 +42,9 @@ function App(props: AllProps) {
     */
     if(!user) return(<Auth />)
     else {
-        return(<HandleOrg user={user} />);
+        return(<div className={'d-flex flex-column h-100 p-1 REACT-ROOT' + (props.debug ? " debug" : "")} onClick={() => {statehistory.globalcanundostate = true;} } >
+            <Navbar user={user} room={props.room} />
+        </div>);
     }
 
 }

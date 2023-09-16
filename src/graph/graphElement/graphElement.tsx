@@ -264,9 +264,10 @@ export class GraphElementComponent<AllProps extends AllPropss = AllPropss, Graph
     // todo: can be improved by import memoize from "memoize-one"; it is high-order function that memorize the result if params are the same without re-executing it (must not have side effects)
     //  i could use memoization to parse the jsx and to execute the user-defined pre-render function
 
-    select(forUser:Pointer<DUser, 0, 1> = null) {
+    select() {
         const id = this.props.data?.id;
-        if (!forUser) forUser = DUser.current;
+        const user = Selectors.getCurrentUser();
+        const forUser = user ? user.token : DUser.current;
         // this.props.node.isSelected[forUser] = true;
 
         BEGIN();

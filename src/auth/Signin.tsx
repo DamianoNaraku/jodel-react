@@ -21,10 +21,17 @@ export default function Signin(props: IProps) {
             password: password
         });
         if(!response) {alert('Invalid Data!'); return;}
-        const dUser = DUser.new(username, response.data.token);
+        const token = response.data.token;
+        await Persistance.put(`model/${username}`, {
+            author: username,
+            is_public: 0,
+            content_xml: 'empty',
+            namespace: username,
+            name: 'Default State'
+        }, token);
+        const dUser = DUser.new(username, token);
         CreateElementAction.new(dUser);
         SetRootFieldAction.new('user', dUser.id, '', true);
-
     }
 
     return (
