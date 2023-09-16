@@ -15,7 +15,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
 
   backend:
-    image: giordanotin/jjodel-backend:1.1
+    image: giordanotin/jjodel-backend:1.2
     container_name: backend
     environment:
       - DJANGO_DATABASE_URL=postgres://postgres:postgres@db:5432/jjodel
