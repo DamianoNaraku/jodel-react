@@ -1550,16 +1550,23 @@ export class DUser extends DPointerTargetable{
 }
 
 @RuntimeAccessible
-export class LUser extends LPointerTargetable { // MixOnlyFuncs(DUser, LPointerTargetable)
+export class LUser <Context extends LogicContext<DUser> = any, D extends DUser = DUser>  extends LPointerTargetable {
     public static cname: string = "LUser";
     static subclasses: (typeof RuntimeAccessibleClass | string)[] = [];
     static _extends: (typeof RuntimeAccessibleClass | string)[] = [];
     public __raw!: DUser;
     id!: Pointer<DUser, 1, 1, LUser>;
+    pk!: string;  // The pk used in the database: Pointer_DUser_10 -> 10
     username!: string;
     token!: string;
     __isUser!: true;
     cursorPosition!: IPoint; //todo
+
+    protected get_pk(context: Context): LUser['pk'] {
+        const data = context.data;
+        return data.id.split('_')[2]; // 0 -> 'Pointer', 1 -> 'DUser', 2 -> PK
+    }
+
 }
 RuntimeAccessibleClass.set_extend(DPointerTargetable, DUser);
 RuntimeAccessibleClass.set_extend(LPointerTargetable, LUser);

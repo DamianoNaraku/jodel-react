@@ -9,7 +9,9 @@ import CreateOrg from "../../organizzation/CreateOrg";
 import Dock from "../abstract/DockLayout";
 
 function Navbar(props: AllProps) {
+    const user = props.user;
     const [onModel, setOnModel] = useStateIfMounted(false);
+
     if(onModel) {
         return(<>
             <Topbar user={props.user} room={props.room} setOnModel={setOnModel} />
@@ -21,8 +23,9 @@ function Navbar(props: AllProps) {
                 <label onClick={() => setOnModel(true)} className={'item border round ms-1'}>Go to Models</label>
             </div>
             <div>
-                <SearchOrg user={props.user} />
-                <CreateOrg user={props.user} />
+                <SearchOrg user={user} />
+                <CreateOrg user={user} />
+                <h5>{user.pk}</h5>
             </div>
         </>);
     }

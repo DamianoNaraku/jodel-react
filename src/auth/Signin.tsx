@@ -13,29 +13,44 @@ export default function Signin(props: IProps) {
 
     const submit = async(evt: React.MouseEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        evt.preventDefault();
-        const response = await Persistance.post('user', {
+        // SIGN UP
+        let response = await Persistance.post('user', {
             name: name,
             username: username,
             mail: email,
             password: password
         });
-        if(!response) {alert('Invalid Data!'); return;}
+        if(!response) {alert('Invalid Data 1!'); return;}
+
+        // TOKEN
+        response = await Persistance.post('token/', {
+            username: username,
+            password: password
+        });
+        if(!response) {alert('Invalid Data 2!'); return;}
+
+        // MODEL INITIALIZATION
         const token = response.data.token;
-        await Persistance.put(`model/${username}`, {
+        response = await Persistance.put(`model/${username}`, {
             author: username,
             is_public: 0,
             content_xml: 'empty',
             namespace: username,
             name: 'Default State'
         }, token);
-        const dUser = DUser.new(username, token);
+        if(!response) {alert('Invalid Data 3!'); return;}
+
+        // MORE INFO
+        response = await Persistance.get(`user/${username}`, token);
+        if(!response) {alert('Invalid Data 4!'); return;}
+
+        const dUser = DUser.new(username, token, `Pointer_DUser_${response.data.pk}`);
         CreateElementAction.new(dUser);
         SetRootFieldAction.new('user', dUser.id, '', true);
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container">
             <form onSubmit={submit}>
                 <input type={'text'} className={'form-control my-2'}
                        onChange={(evt) => setName(evt.target.value)} placeholder={'Name'} />

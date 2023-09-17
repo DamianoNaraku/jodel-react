@@ -10,18 +10,21 @@ export default function Login(props: IProps) {
 
     const submit = async(evt: React.MouseEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        const response = await Persistance.post('token/', {
+        let response = await Persistance.post('token/', {
             username: username,
             password: password
         });
         if(!response) {alert('Invalid Data!'); return;}
-        const dUser = DUser.new(username, response.data.token);
+        const token = response.data.token;
+        response = await Persistance.get(`user/${username}`, token);
+        if(!response) {alert('Invalid Data!'); return;}
+        const dUser = DUser.new(username, token, `Pointer_DUser_${response.data.pk}`);
         CreateElementAction.new(dUser);
         SetRootFieldAction.new('user', dUser.id, '', true);
     }
 
     return (
-        <div className={'container mt-5'}>
+        <div className={'container'}>
             <form onSubmit={submit}>
                 <input type={'text'} className={'form-control my-2'} placeholder={'Username'}
                        onChange={(evt) => setUsername(evt.target.value)} required={true} />
