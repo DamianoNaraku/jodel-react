@@ -7,20 +7,24 @@ import Topbar from "../topbar/Topbar";
 import SearchOrg from "../../organizzation/SearchOrg";
 import CreateOrg from "../../organizzation/CreateOrg";
 import Dock from "../abstract/DockLayout";
+import Profile from "../../profile/Profile";
 
 function Navbar(props: AllProps) {
     const user = props.user;
-    const [onModel, setOnModel] = useStateIfMounted(false);
+    const [tab, setTab] = useStateIfMounted('organization');
 
-    if(onModel) {
+    if(tab === 'model') {
         return(<>
-            <Topbar user={props.user} room={props.room} setOnModel={setOnModel} />
+            <Topbar user={props.user} room={props.room} setTab={setTab} />
             <Dock />
         </>);
-    } else {
+    }
+
+    if(tab === 'organization') {
         return(<>
             <div className={'nav-bar d-flex'}>
-                <label onClick={() => setOnModel(true)} className={'item border round ms-1'}>Go to Models</label>
+                <label onClick={() => setTab('profile')} className={'item border round ms-1'}>Profile</label>
+                <label onClick={() => setTab('model')} className={'item border round ms-1'}>Go to Models</label>
             </div>
             <div>
                 <SearchOrg user={user} />
@@ -30,6 +34,19 @@ function Navbar(props: AllProps) {
         </>);
     }
 
+    if(tab === 'profile') {
+        return(<>
+            <div className={'nav-bar d-flex'}>
+                <label onClick={() => setTab('organization')} className={'item border round ms-1'}>Organizations</label>
+                <label onClick={() => setTab('model')} className={'item border round ms-1'}>Go to Models</label>
+            </div>
+            <div>
+                <Profile user={user} />
+            </div>
+        </>);
+    }
+
+    return(<>Error</>);
 }
 interface OwnProps {user: LUser, room?: string}
 interface StateProps {}

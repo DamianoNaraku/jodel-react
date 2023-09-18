@@ -446,7 +446,7 @@ export class Constructors<T extends DPointerTargetable>{
     DState(): this {
         let thiss: DState = this.thiss as any;
         // todo: this must become a pointer to idlookup and fire a CreateNewElementAction
-        thiss.currentUser = DUser.new('dummy', 'dummy', undefined);
+        thiss.currentUser = DUser.new('dummy', 'dummy', 'dummy', 'dummy', undefined);
         thiss.users = [thiss.currentUser.id];
         thiss.models = [];
         return this; }
@@ -564,10 +564,12 @@ export class Constructors<T extends DPointerTargetable>{
         }
         return this; }
 
-    DUser(username: DUser['username'], token: DUser['token'], id?: DUser["id"]): this {
+    DUser(username: DUser['username'], name: DUser['name'], email: DUser['email'], token: DUser['token'], id?: DUser["id"]): this {
         const thiss: DUser = this.thiss as any;
         thiss.id = id ||  new Date().getTime() + '_USER_' + (DPointerTargetable.maxID++);
         thiss.username = username;
+        thiss.name = name;
+        thiss.email = email;
         thiss.token = token;
         if (this.persist) {
             // no pointedBy
@@ -1542,10 +1544,12 @@ export class DUser extends DPointerTargetable{
     cursorPositionY: number = 0;
     id!: Pointer<DUser, 1, 1, LUser>;
     username!: string;
+    name!: string;
+    email!: string;
     token!: string;
     __isUser: true = true; // necessary to trick duck typing to think this is NOT the superclass of anything that extends PointerTargetable.
-    public static new(username: string, token: string, id?: DUser["id"], triggerActions: boolean = true): DUser {
-        return new Constructors(new DUser('dwc'), undefined, false).DPointerTargetable().DUser(username, token, id).end();
+    public static new(username: string, name: string, email: string, token: string, id?: DUser["id"], triggerActions: boolean = true): DUser {
+        return new Constructors(new DUser('dwc'), undefined, false).DPointerTargetable().DUser(username, name, email, token, id).end();
     }
 }
 
@@ -1558,6 +1562,8 @@ export class LUser <Context extends LogicContext<DUser> = any, D extends DUser =
     id!: Pointer<DUser, 1, 1, LUser>;
     pk!: string;  // The pk used in the database: Pointer_DUser_10 -> 10
     username!: string;
+    name!: string;
+    email!: string;
     token!: string;
     __isUser!: true;
     cursorPosition!: IPoint; //todo

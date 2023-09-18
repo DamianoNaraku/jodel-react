@@ -14,23 +14,25 @@ export default function Login(props: IProps) {
             username: username,
             password: password
         });
-        if(!response) {alert('Invalid Data!'); return;}
+        if(!response) {alert('Invalid Data 1!'); return;}
         const token = response.data.token;
         response = await Persistance.get(`user/${username}`, token);
-        if(!response) {alert('Invalid Data!'); return;}
-        const dUser = DUser.new(username, token, `Pointer_DUser_${response.data.pk}`);
+        if(!response) {alert('Invalid Data 2!'); return;}
+        const pk = response.data.pk;
+        const name = response.data.first_name;
+        const email = response.data.email;
+        const dUser = DUser.new(username, name, email, token, `Pointer_DUser_${pk}`);
         CreateElementAction.new(dUser);
         SetRootFieldAction.new('user', dUser.id, '', true);
     }
 
-    return (
-        <div className={'container'}>
-            <form onSubmit={submit}>
-                <input type={'text'} className={'form-control my-2'} placeholder={'Username'}
-                       onChange={(evt) => setUsername(evt.target.value)} required={true} />
-                <input type={'password'} className={'form-control my-2'} placeholder={'Password'}
-                       onChange={(evt) => setPassword(evt.target.value)} required={true} />
-                <button type={'submit'} className={'form-control btn btn-primary my-3'}>Login</button>
-            </form>
-        </div>)
+    return (<div className={'container'}>
+        <form onSubmit={submit}>
+            <input type={'text'} className={'form-control my-2'} placeholder={'Username'}
+                   onChange={(evt) => setUsername(evt.target.value)} required={true} />
+            <input type={'password'} className={'form-control my-2'} placeholder={'Password'}
+                   onChange={(evt) => setPassword(evt.target.value)} required={true} />
+            <button type={'submit'} className={'form-control btn btn-primary my-3'}>Login</button>
+        </form>
+    </div>)
 }

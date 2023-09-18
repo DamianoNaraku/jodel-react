@@ -44,23 +44,23 @@ export default function Signin(props: IProps) {
         response = await Persistance.get(`user/${username}`, token);
         if(!response) {alert('Invalid Data 4!'); return;}
 
-        const dUser = DUser.new(username, token, `Pointer_DUser_${response.data.pk}`);
+        const pk = response.data.pk;
+        const dUser = DUser.new(username, name, email, token, `Pointer_DUser_${pk}`);
         CreateElementAction.new(dUser);
         SetRootFieldAction.new('user', dUser.id, '', true);
     }
 
-    return (
-        <div className="container">
-            <form onSubmit={submit}>
-                <input type={'text'} className={'form-control my-2'}
-                       onChange={(evt) => setName(evt.target.value)} placeholder={'Name'} />
-                <input type={'text'} className={'form-control my-2'}
-                       onChange={(evt) => setUsername(evt.target.value)} placeholder={'Username'} />
-                <input type={'email'} className={'form-control my-2'}
-                       onChange={(evt) => setEmail(evt.target.value)} placeholder={'E-mail'} />
-                <input type={'password'} className={'form-control my-2'}
-                       onChange={(evt) => setPassword(evt.target.value)} placeholder={'Password'} />
-                <button type={'submit'} className={'form-control btn btn-primary my-3'}>Sign in</button>
-            </form>
-        </div>)
+    return (<div className="container">
+        <form onSubmit={submit}>
+            <input type={'text'} className={'form-control my-2'}
+                   onChange={(evt) => setName(evt.target.value)} placeholder={'Name'} />
+            <input type={'text'} className={'form-control my-2'}
+                   onChange={(evt) => setUsername(evt.target.value)} placeholder={'Username'} />
+            <input type={'email'} className={'form-control my-2'}
+                   onChange={(evt) => setEmail(evt.target.value)} placeholder={'E-mail'} />
+            <input type={'password'} className={'form-control my-2'}
+                   onChange={(evt) => setPassword(evt.target.value)} placeholder={'Password'} />
+            <button type={'submit'} className={'form-control btn btn-primary my-3'}>Sign in</button>
+        </form>
+    </div>)
 }

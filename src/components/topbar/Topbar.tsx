@@ -99,7 +99,8 @@ function Topbar(props: AllProps) {
             />
         </label>
 
-        <label onClick={() => props.setOnModel(false)} className={'item border round ms-1'}>Go to Organizations</label>
+        <label onClick={() => props.setTab('organization')} className={'item border round ms-1'}>Organizations</label>
+        <label onClick={() => props.setTab('profile')} className={'item border round ms-1'}>Profile</label>
         <label onClick={saveToDB} className={'item border round ms-1'}>Save DB</label>
         <label onClick={loadFromDB} className={'item border round ms-1'}>Load DB</label>
 
@@ -108,7 +109,7 @@ function Topbar(props: AllProps) {
         </div>
     </div>);
 }
-interface OwnProps {room?: string, user: LUser, setOnModel: (flag: boolean) => void}
+interface OwnProps {room?: string, user: LUser, setTab: (tab: string) => void}
 interface StateProps {debug: boolean}
 interface DispatchProps {}
 type AllProps = OwnProps & StateProps & DispatchProps;
