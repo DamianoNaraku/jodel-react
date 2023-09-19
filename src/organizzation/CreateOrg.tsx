@@ -29,7 +29,7 @@ export default function CreateOrg(props: IProps) {
             return;
         }
 
-        response = await Persistance.put(`organization/${name}/admin/${user.username}`,{}, user.token);
+        await Persistance.put(`organization/${name}/admin/${user.username}`,{}, user.token);
 
     }
 
