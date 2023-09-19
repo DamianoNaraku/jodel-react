@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {Organization} from './types';
-import {useEffectOnce} from "usehooks-ts";
 import Persistance from "../persistance/api";
-import {data} from "jquery";
 import {useStateIfMounted} from "use-state-if-mounted";
 import {GObject, LUser} from "../joiner";
 
