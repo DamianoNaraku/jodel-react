@@ -17,15 +17,20 @@ export default function CreateOrg(props: IProps) {
 
     const submit = async(evt: React.MouseEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        const response = await Persistance.put(`organization/${name}`, {
+        let response = await Persistance.put(`organization/${name}`, {
             name: name,
             mailDomainRequired: emailOrg,
             bio: bio,
             openMembership: isOpen ? '1' : '0',
             isPublic: isPublic ? '1' : '0'
         }, user.token);
-        if(!response) alert('Error');
-        else alert('Ok');
+        if(!response) {
+            alert('Error');
+            return;
+        }
+
+        response = await Persistance.put(`organization/${name}/admin/${user.username}`,{}, user.token);
+
     }
 
     return (

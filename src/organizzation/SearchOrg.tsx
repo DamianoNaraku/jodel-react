@@ -58,7 +58,7 @@ export default function SearchOrg(props: IProps) {
                 )}
             </ul>
             <Pagination orgsPerPage={2} totalOrgs={resultCount} curPage={currentPage} changePage={changePage} />
-            {currentOrg && <DetailOrg org={currentOrg} handleCloseButton={() => setCurrentOrg(null)} />}
+            {currentOrg && <DetailOrg org={currentOrg} user={user} handleCloseButton={() => setCurrentOrg(null)} />}
         </div>
     )
 

@@ -58,4 +58,17 @@ export default class Persistance {
         return null;
     }
 
+    static async delete(path: string, token?: string, queryPars?: string): Promise<AxiosResponse|null> {
+        console.clear();
+        const config: AxiosRequestConfig = {};
+        if(token) config.headers = {'Authorization': `Token ${token}`}
+        try {
+            const response = await axios.delete(Persistance.url(path, queryPars), config);
+            console.log(response);
+            return response
+
+        } catch (e) {console.log('API Error', e);}
+        return null;
+    }
+
 }
