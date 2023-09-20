@@ -19,6 +19,7 @@ export default function SearchOrg(props: IProps) {
         evt.preventDefault();
         const response = await Persistance.get('organization', user.token, `regexp=0&name=${search}`);
         if(!response) {alert('Error'); return;}
+        setCurrentOrg(null);
         setOrgs(response.data.results);
         setResultCount(response.data.count);
         setCurrentPage(1);
@@ -30,6 +31,14 @@ export default function SearchOrg(props: IProps) {
         setOrgs(response.data.results);
         setResultCount(response.data.count);
         setCurrentPage(page);
+    }
+
+    const deleteOrg = async (org: Organization) => {
+        let response = await  Persistance.delete(`organization/${org.name}`, user.token);
+        if(response) {
+            setOrgs(orgs.filter(o => o.name != org.name))
+            setCurrentOrg(null);
+        }
     }
 
     function reset() {
@@ -57,8 +66,12 @@ export default function SearchOrg(props: IProps) {
                     </li>
                 )}
             </ul>
-            <Pagination orgsPerPage={2} totalOrgs={resultCount} curPage={currentPage} changePage={changePage} />
-            {currentOrg && <DetailOrg org={currentOrg} user={user} handleCloseButton={() => setCurrentOrg(null)} />}
+            {orgs.length > 0 && <Pagination orgsPerPage={2} totalOrgs={resultCount} curPage={currentPage} changePage={changePage} />}
+            {currentOrg && <DetailOrg
+                org={currentOrg}
+                user={user}
+                handleCloseButton={() => setCurrentOrg(null)}
+                handleRemoveOrg={(org: Organization) => deleteOrg(org)}/>}
         </div>
     )
 
