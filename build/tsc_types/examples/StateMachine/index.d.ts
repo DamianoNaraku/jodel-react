@@ -1,0 +1,33 @@
+export declare class StateMachine {
+    private static user;
+    private static project;
+    private static M2;
+    private static pkg;
+    private static state;
+    private static transition;
+    private static command;
+    private static event;
+    private static M1;
+    private static idle;
+    private static viewpoint;
+    private static reset;
+    private static resetInstance;
+    private static view;
+    private static start;
+    private static loadM2;
+    private static loadViews;
+    static loadBig(name: string): void;
+    static load0(name: string): void;
+    static load1(name: string): void;
+    static load2(name: string): void;
+    static load3(name: string): void;
+    static load4(name: string): void;
+    static load5(name: string): void;
+    static load6(name: string): void;
+    static load7(name: string): void;
+    static load8(name: string): void;
+    static load9(name: string): void;
+    static load10(name: string): void;
+    static load11(name: string): void;
+    static load12(name: string): void;
+}

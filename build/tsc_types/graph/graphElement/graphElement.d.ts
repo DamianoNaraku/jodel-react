@@ -1,0 +1,62 @@
+import React, { Component, Dispatch, ReactElement, ReactNode } from "react";
+import './graphElement.scss';
+import { DEdge, DGraph, DGraphElement, Dictionary, DModelElement, DState, DUser, DViewElement, EMeasurableEvents, GObject, GraphElementDispatchProps, GraphElementOwnProps, GraphElementReduxStateProps, GraphElementStatee, LViewElement, Overlap, Pointer } from "../../joiner";
+export declare const lightModeAllowedElements: string[];
+export declare class GraphElementComponent<AllProps extends AllPropss = AllPropss, GraphElementState extends GraphElementStatee = GraphElementStatee> extends Component<AllProps, GraphElementState> {
+    static cname: string;
+    static all: Dictionary<number, GraphElementComponent>;
+    static map: Dictionary<Pointer<DGraphElement>, GraphElementComponent>;
+    static maxid: number;
+    id: number;
+    static defaultShouldComponentUpdate<AllProps extends GObject, State extends GObject, Context extends any>(instance: React.Component, nextProps: Readonly<AllProps>, nextState: Readonly<State>, nextContext: Context): boolean;
+    static mapViewStuff(state: DState, ret: GraphElementReduxStateProps, ownProps: GraphElementOwnProps): void;
+    static mapLModelStuff(state: DState, ownProps: GraphElementOwnProps, ret: GraphElementReduxStateProps): void;
+    static mapLGraphElementStuff(state: DState, ownProps: GraphElementOwnProps, ret: GraphElementReduxStateProps, dGraphElementDataClass?: typeof DGraphElement, isDGraph?: DGraph): void;
+    static mapStateToProps(state: DState, ownProps: GraphElementOwnProps, dGraphDataClass?: (typeof DGraphElement | typeof DEdge), startingobj?: GObject): GraphElementReduxStateProps;
+    static mapDispatchToProps(dispatch: Dispatch<any>): GraphElementDispatchProps;
+    countRenders: number;
+    _isMounted: boolean;
+    html: React.RefObject<HTMLElement | undefined>;
+    lastViewChanges: {
+        t: number;
+        vid: Pointer<DViewElement>;
+        v: LViewElement;
+        key?: string;
+    }[];
+    lastOnUpdateChanges: {
+        t: number;
+    }[];
+    stopUpdateEvents?: number;
+    dataOldClonedCounter?: number;
+    shouldComponentUpdate(nextProps: Readonly<AllProps>, nextState: Readonly<GraphElementState>, nextContext: any, oldProps?: Readonly<AllProps>): boolean;
+    protected doMeasurableEvent(type: EMeasurableEvents, vid: Pointer<DViewElement>): boolean;
+    select(forUser?: Pointer<DUser>): void;
+    constructor(props: AllProps, context: any);
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    protected getJSXContext(vid: Pointer<DViewElement>): GObject;
+    static displayError(e: Error, where: string, view: DViewElement, data?: DModelElement, node?: DGraphElement, asString?: boolean, printData?: GObject): React.ReactNode;
+    protected getTemplate3(vid: Pointer<DViewElement>, v: LViewElement, context: GObject): ReactNode;
+    protected getTemplate3_(vid: Pointer<DViewElement>, v: LViewElement, context: GObject): ReactNode;
+    protected getTemplate2(v: LViewElement, udContext: GObject): ReactNode;
+    onContextMenu(e: React.MouseEvent<Element>): void;
+    doContextMenu(e: React.MouseEvent<Element>): void;
+    onEnter(e: React.MouseEvent<Element>): void;
+    onLeave(e: React.MouseEvent<Element>): void;
+    static mousedownComponent: GraphElementComponent | undefined;
+    onMouseDown(e: React.MouseEvent): void;
+    onScroll(e: React.MouseEvent): void;
+    onMouseUp(e: React.MouseEvent): void;
+    onKeyDown(e: React.KeyboardEvent): void;
+    private doOnClick;
+    onClick(e: React.MouseEvent): void;
+    onDataUpdateMeasurable(view: LViewElement, vid: Pointer<DViewElement>, index: number): void;
+    render(nodeType?: string, styleoverride?: React.CSSProperties, classes?: string[]): ReactNode;
+    protected renderView(props: AllProps, v: LViewElement, nodeType: string, classes: string[], styleoverride: React.CSSProperties, otherViews?: (ReactNode | ReactElement)[], mainviewid?: Pointer<DViewElement>, subViewsID?: Pointer<DViewElement>[]): ReactNode | ReactElement;
+}
+declare type AllPropss = Overlap<Overlap<GraphElementOwnProps, GraphElementDispatchProps>, GraphElementReduxStateProps>;
+export declare const GraphElement: {
+    (props: GraphElementOwnProps, children?: (string | React.Component)[]): ReactElement;
+    cname: string;
+};
+export {};
