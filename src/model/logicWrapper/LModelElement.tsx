@@ -3544,7 +3544,7 @@ export class LModel<Context extends LogicContext<DModel> = any, C extends Contex
         return this._defaultGetterM2(c, key);
     }
     _defaultGetterM2(c: Context, key: string): any{
-        return Log.e("Could not find property " + key + " on MetaModel", {c, key, m2});
+        return Log.e("Could not find property " + key + " on MetaModel", {c, key});
     }
     _defaultGetterM1(c: Context, key: string): any{
         // if m1.$m2classname"s" then --> this.instancesOf("m2classname")

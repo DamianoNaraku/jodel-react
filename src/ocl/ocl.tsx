@@ -15,6 +15,7 @@ export class Persona {
 
 export class OCL{
     public static evaluate<T extends GObject>(obj0: T, constructor: Constructor<T>, oclexp: string, typeused: Constructor[]=[], oclEngine?: OclEngine): OclResult {
+        windoww.oclEngine = OclEngine;
         if (!oclEngine) {
             oclEngine = OclEngine.create();
             var oclResult = null;
@@ -49,6 +50,7 @@ export class OCL{
     }
 
     public static filter<T extends GObject>(keepIndex: boolean, returnType: 'ocl' | 'bool' | 'src', obj0: T[], oclexp: string, typeused: Constructor[]=[]) {
+        windoww.oclEngine = OclEngine;
         var oclEngine = OclEngine.create();
         var oclResult = null;
         const typeregister: GObject = {};
